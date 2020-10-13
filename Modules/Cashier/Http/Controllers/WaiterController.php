@@ -4,7 +4,7 @@ namespace Modules\Cashier\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Restaurant\Models\Waiter;
+use Modules\Restaurant\Models\{Waiter, Order};
 
 class WaiterController extends Controller
 {
@@ -32,8 +32,23 @@ class WaiterController extends Controller
      * @param  \App\Waiter  $waiter
      * @return \Illuminate\Http\Response
      */
-    public function show(Waiter $waiter)
+    public function show(Request $request, Waiter $waiter)
     {
-        return view('cashier::waiters.show', compact('waiter'));
+        $builder = Order::where('waiter_id', $waiter->id)->orderBy('updated_at');
+        $from_date = $request->has('from_date') ? $request->from_date : date('Y-m-d');
+        $to_date = $request->has('to_date') ? $request->to_date : date('Y-m-d');
+        
+        $status = $request->has('status') ? $request->status : 'open';
+        
+        $from_date_time = $from_date . ' 00:00:00';
+        $to_date_time = $to_date . ' 23:59:59';
+        
+        $builder->whereBetween('created_at', [$from_date_time, $to_date_time]);
+        if ($status != 'all') {
+            $builder->where('status', Order::getTypeValue($status));
+        }
+        
+        $orders = $builder->get()->sortByDesc('status');
+        return view('cashier::waiters.show', compact('waiter', 'orders', 'status', 'from_date', 'to_date'));
     }
 }

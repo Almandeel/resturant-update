@@ -71,6 +71,18 @@ class Order extends Model
         throw new Exception("Unsupported status type", 1);
     }
     
+    public function isOpen(){
+        return $this->checkStatus('open');
+    }
+    
+    public function isClosed(){
+        return $this->checkStatus('closed');
+    }
+    
+    public function isCanceled(){
+        return $this->checkStatus('canceled');
+    }
+    
     // public function getTypeAttribute(){
     //     if (is_null($this->driver_id) && is_null($this->waiter_id)) {
     //         return self::TYPE_TAKEAWAY;
@@ -105,16 +117,8 @@ class Order extends Model
         throw new Exception("Unsupported type", 1);
     }
     
-    public function isOpen(){
-        return $this->checkStatus('open');
-    }
-    
-    public function isClosed(){
-        return $this->checkStatus('closed');
-    }
-    
-    public function isCanceled(){
-        return $this->checkStatus('canceled');
+    public function isDelivery(){
+        return $this->checkType('delivery');
     }
     
     public function close(){
@@ -142,9 +146,17 @@ class Order extends Model
         return $net;
     }
     
-    public function table()
+    public function orderTable()
     {
-        return $this->belongsTo(Table::class);
+        return $this->belongsTo(Table::class, 'table_id');
+    }
+    
+    public function getHallAttribute()
+    {
+        if (is_null($this->orderTable)) {
+            return new Hall;
+        }
+        return $this->orderTable->hall;
     }
     
     public function driver()
@@ -161,6 +173,16 @@ class Order extends Model
     {
         return $this->hasMany(ItemOrder::class, 'order_id');
         // return $this->belongsToMany(ItemUnit::class)->withPivot(['quantity', 'price', 'status']);
+    }
+    
+    public function update(array $attributes = [], array $options = []){
+        $result = parent::update($attributes, $options);
+        if (!array_key_exists('status', $attributes)) {
+            if (!is_null($this->delivery)) {
+                $this->delivery->delivered();
+            }
+        }
+        return $result;
     }
     
     public static function create(array $attributes = []){

@@ -1,7 +1,7 @@
 @extends('cashier::layouts.master', [
     'title' => 'الكباتن',
     'crumbs' => [
-        ['title' => 'الكباتن', 'icon' => 'fa fa-user'],
+        ['title' => 'الكباتن', 'icon' => 'icon-waiter'],
     ]
 ])
 @push('content')

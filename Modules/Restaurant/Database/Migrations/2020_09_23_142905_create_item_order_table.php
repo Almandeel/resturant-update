@@ -28,7 +28,7 @@ class CreateItemOrderTable extends Migration
                 ->onDelete('no action')
                 ->onUpdate('no action');
             $table->foreign('item_id', 'fk_item_order_items_idx')
-                ->references('id')->on('items')
+                ->references('id')->on('item_unit')
                 ->onDelete('no action')
                 ->onUpdate('no action');
             $table->timestamps();

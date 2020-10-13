@@ -8,6 +8,12 @@
     @permission('orders-read')
         <li class="{{ (request()->segment(2) == 'orders') ? 'active' : '' }}"><a href="{{ route('cashier.orders.index') }}"><i class="icon-order"></i><span>الطلبات</span></a></li>
     @endpermission
+    @permission('safes-read')
+        <li class="{{ (request()->segment(2) == 'safe') ? 'active' : '' }}"><a href="{{ route('cashier.safe') }}"><i class="fa fa-money"></i><span>الخزنة</span></a></li>
+    @endpermission
+    @permission('reports-read')
+        <li class="{{ (request()->segment(2) == 'reports') ? 'active' : '' }}"><a href="{{ route('cashier.reports.index') }}"><i class="fa fa-print"></i><span>التقارير</span></a></li>
+    @endpermission
     @stack('navbar_items')
 @endpush
 @push('dashboard_navbar_left_items')

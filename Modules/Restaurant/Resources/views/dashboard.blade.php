@@ -13,6 +13,19 @@
     <hr>
     <div class="container">
         <div class="row">
+            @permission('employees-read')
+            <div class="col-lg-4 col-xs-12">
+                <div class="small-box bg-yellow text-right">
+                    <div class="inner">
+                        <h3>موظفو الكاشير</h3>
+                    </div>
+                    <div class="icon pull-right">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <a href="{{ route('restaurant.cashiers.index') }}" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i>  عرض  </a>
+                </div>
+            </div>
+            @endpermission
             @permission('menus-read')
             <div class="col-lg-4 col-xs-12">
                 <div class="small-box bg-yellow text-right">
@@ -52,8 +65,8 @@
                 </div>
             </div>
             @endpermission
-        </div>
-        <div class="row">
+        {{--  </div>
+        <div class="row">  --}}
             @permission('drivers-read')
             <div class="col-lg-4 col-xs-12">
                 <div class="small-box bg-yellow text-right">

@@ -331,7 +331,7 @@
                                 </div> <!-- widget .// -->
                                 <div class="widget-header">
                                     <a href="#" class="icontext">
-                                        <button type="button" class="logout btn btn-circle btn-outline-warning m-btn m-btn--icon m-btn--icon-only" data-toggle="tooltip" data-placement="bottom" title="تسجيل الخروج">
+                                        <button id="logout-btn" type="button" class="logout btn btn-circle btn-outline-warning m-btn m-btn--icon m-btn--icon-only" data-toggle="tooltip" data-placement="bottom" title="تسجيل الخروج">
                                             <i class="fa fa-sign-out"></i>
                                         </button>
                                     </a>
@@ -513,7 +513,9 @@
                 </div><!-- container //  -->
             </section>
             <!-- ========================= SECTION CONTENT END// ========================= -->
-
+            {{--  <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                @csrf
+            </form>  --}}
             <!-- ========================= ITEM MODAL START// ========================= -->
             <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -819,6 +821,26 @@
                 let menus_links = $('#menus-links');
                 let page_unloaded = true;
                 $(function() {
+                    $('#logout-btn').click(function(){
+                        let that = $(this);
+                        Swal.fire({
+                            title: 'تحذير',
+                            text: 'سوف يتم تسجيل خروجك من النظام استمرار؟',
+                            icon: 'warning',
+                            confirmButtonColor: '#ffc107',
+                            confirmButtonTextColor: '#212529',
+                            confirmButtonClass: 'btn btn-warning',
+                            confirmButtonText: 'إستمرار',
+                            cancelButtonText: 'إلغاء',
+                            confirmButtonClass: 'btn btn-success',
+                            cancelButtonColor: '#00a65a',
+                            showCancelButton: true,
+                        }).then(function(result){
+                            if(result.value){
+                                $('form#logout-form').submit()
+                            }
+                        })
+                    })
                     @if (!is_null($order))
                         calcuteTotals()
                     @endif
@@ -1176,6 +1198,9 @@
                     return menu_items_html;
                 }
             </script>
+        </form>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+            @csrf
         </form>
     </body>
 

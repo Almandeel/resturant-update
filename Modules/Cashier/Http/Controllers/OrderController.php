@@ -41,7 +41,7 @@ class OrderController extends Controller
             $builder->where('status', Order::getStatusValue($status));
         }
         
-        $orders = $builder->get()->sortByDesc('type')->sortByDesc('status');
+        $orders = $builder->get();//->sortByDesc('status');
         // dd($orders->last()->delivery);
         return view('cashier::orders.index', compact('orders', 'type', 'status', 'from_date', 'to_date'));
     }
@@ -95,10 +95,12 @@ class OrderController extends Controller
                 ];
             }
             
-            $delivery_details['dirver_id'] = $request->driver_id;
+            $delivery_details['driver_id'] = $request->driver_id;
         }
         else if (!(is_null($request->waiter_id) && is_null($request->table_id))) {
             $data['type'] = Order::TYPE_LOCAL;
+            $data['waiter_id'] = $request->waiter_id;
+            $data['table_id'] = $request->table_id;
         }
         else {
             $status = Order::STATUS_CLOSED;

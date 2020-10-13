@@ -1,14 +1,39 @@
 @extends('cashier::layouts.master', [
-    'title' => 'الطاولات',
+    'title' => "السائق: $driver->name",
     'crumbs' => [
-        ['url' => route('cashier.tables.index'), 'title' => 'الطاولات', 'icon' => 'fa fa-circle'],
-        ['title' => 'طاولة: ' . $table->number, 'icon' => 'fa fa-circle'],
+        ['url' => route('cashier.drivers.index'), 'title' => __('restaurant::drivers.list'), 'icon' => 'icon-driver'],
+        ['title' => "السائق: $driver->name", 'icon' => ''],
     ]
 ])
+@push('head')
+    <link rel="stylesheet" href="{{ asset('dashboard/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+@endpush
+
+
 @push('content')
     <div class="box box-primary">
         <div class="box-header">
-            <h3 class="box-title">طاولة: {{ $table->number }}</h3>
+            <h3 class="box-title">السائق: {{ $driver->name }}</h3>
+        </div>
+        <div class="box-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>@lang('restaurant::global.name')</th>
+                        <th>@lang('restaurant::global.phone')</th>
+                        <th>@lang('restaurant::global.address')</th>
+                        <th>@lang('restaurant::global.status')</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ $driver->name }}</td>
+                        <td>{{ $driver->phone }}</td>
+                        <td>{{ $driver->address }}</td>
+                        <td>{!! $driver->displayStatus('text') !!}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="box box-primary">
@@ -27,19 +52,19 @@
                         <select name="status" id="status" class="form-control">
                             <option value="all" {{ $status == 'all' ? 'selected' : '' }}>الكل</option>
                             @foreach (__('restaurant::orders.statuses') as $key => $value)
-                                @if (!is_array($key))
-                                    <option value="{{ $key }}" {{ $status == $key ? 'selected' : '' }}>{{ $value }}</option>
-                                @endif
+                            @if (!is_array($key))
+                            <option value="{{ $key }}" {{ $status == $key ? 'selected' : '' }}>{{ $value }}</option>
+                            @endif
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="from_date">من</label>
-                        <input type="date" name="from_date" id="from_date" class="form-control" value="{{ $from_date }}"/>
+                        <input type="date" name="from_date" id="from_date" class="form-control" value="{{ $from_date }}" />
                     </div>
                     <div class="form-group">
                         <label for="to_date">إلى</label>
-                        <input type="date" name="to_date" id="to_date" class="form-control" value="{{ $to_date }}"/>
+                        <input type="date" name="to_date" id="to_date" class="form-control" value="{{ $to_date }}" />
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">
@@ -55,10 +80,10 @@
                 <thead>
                     <tr>
                         <th>رقم الطلب</th>
+                        <th>النوع</th>
                         <th>الحالة</th>
                         <th>الكمية</th>
                         <th>القيمة</th>
-                        <th>تاريخ الإنشاء</th>
                         <th>الخيارات</th>
                     </tr>
                 </thead>
@@ -66,10 +91,10 @@
                     @foreach ($orders as $order)
                         <tr>
                             <td>{{ $order->number }}</td>
+                            <td>{{ $order->displayType() }}</td>
                             <td>{{ $order->displayStatus() }}</td>
                             <td>{{ $order->items->count() }}</td>
                             <td>{{ number_format($order->amount, 2) }}</td>
-                            <td>{{ $order->created_at->format('Y/m/d') }}</td>
                             <td>
                                 @permission('orders-read')
                                     <a href="{{ route('cashier.orders.show', $order) }}" class="btn btn-info">
