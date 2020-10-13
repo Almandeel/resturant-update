@@ -108,8 +108,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        if($role->isSuper()){
-            return back()->with('error', 'لا يمكنك حذف هذا الدور');
+        if($role->isDefault()){
+            return back()->with('error', 'لا يمكنك حذف دور إفتراضي');
         }
         $role->delete();
 

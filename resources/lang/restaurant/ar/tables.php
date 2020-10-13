@@ -6,6 +6,7 @@ return [
     'fees'       => 'رسوم إضافية',
     'statuses' => [
         'available' => 'متوفر',
+        'busy' => 'مشغولة',
         'unavailable' => 'غير متوفر',
     ],
     // '' => '',

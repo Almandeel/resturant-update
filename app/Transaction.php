@@ -14,7 +14,7 @@ class Transaction extends Model
     -2 => 'خصم',
     1 => 'علاوة',
     ];
-    protected $fillable = ['amount', 'month', 'type', 'details', 'safe_id', 'employee_id', 'entry_id', 'user_id'];
+    protected $fillable = ['amount', 'month', 'type', 'details', 'safe_id', 'employee_id', 'entry_id', 'user_id', 'created_at'];
     
     public function employee(){
         return $this->belongsTo('App\Employee');

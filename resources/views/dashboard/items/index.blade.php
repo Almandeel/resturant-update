@@ -12,7 +12,7 @@
     @endcomponent
     <div class="box">
         <div class="box-header">
-            <h3 class="box-heading">المنتجات</h3>
+            <h3 class="box-title">المنتجات</h3>
             <div class="box-tools">
                 @permission('items-create')
                 {{--  <button type="button" style="display:inline-block; margin-left:1%" class="btn btn-primary btn-sm pull-right showItemModal create" data-toggle="modal" data-target="#items">

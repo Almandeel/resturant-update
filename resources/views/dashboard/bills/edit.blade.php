@@ -361,10 +361,10 @@
 			$('input.input-expense').each(function() {
 				payed += Number($(this).val())
 			})
-			var remain = fillterNumber($('#items-table tfoot tr .total').text()) - (payed);
+			var remain = number_filter($('#items-table tfoot tr .total').text()) - (payed);
 			
 			$('input#remain-display').val(remain)
-			$('input#remain').val(fillterNumber($('#items-table tfoot tr .total').text()) - (payed))
+			$('input#remain').val(number_filter($('#items-table tfoot tr .total').text()) - (payed))
 			$('input#payed').val(payed)
 
 		}
@@ -373,8 +373,8 @@
 			var itemsCount = $('#items-table tbody tr input.input-receive[type="number"]').filter(function () {
 				return this.value > 0;
 			}).length;
-			{{--  var chargesSafe = fillterNumber($('input#chargesSafe').val()),
-				chargesBank = fillterNumber($('input#chargesBank').val());
+			{{--  var chargesSafe = number_filter($('input#chargesSafe').val()),
+				chargesBank = number_filter($('input#chargesBank').val());
 			var charges = chargesSafe + chargesBank;  --}}
 			var charges = 0;
 			$('input.input-expense').each(function() {
@@ -382,11 +382,11 @@
 			})
 			var chargesPerItem = charges / itemsCount;
 			$('#items-table tbody tr').each(function() {
-				var q = fillterNumber($(this).find("input.input-quantity").val());
+				var q = number_filter($(this).find("input.input-quantity").val());
 				var ra = $(this).find("input.receive-all").prop('checked');
-				var p = fillterNumber($(this).find("input.input-price").val());
+				var p = number_filter($(this).find("input.input-price").val());
 				if(ra) $(this).find("input.input-receive").val(q);
-				var r = fillterNumber($(this).find("input.input-receive").val());
+				var r = number_filter($(this).find("input.input-receive").val());
 				$(this).find("input.input-receive").prop('max', q)
 				totalQ += q;
 				totalR += r;

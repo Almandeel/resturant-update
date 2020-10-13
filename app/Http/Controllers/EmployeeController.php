@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Employee;
 use App\Transaction;
 use App\Account;
+use App\{User, Role, Permission};
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -34,7 +35,9 @@ class EmployeeController extends Controller
     */
     public function create()
     {
-        //
+        $permissions = Permission::all();
+        $roles = Role::all();
+        return view('dashboard.employees.create',compact('permissions', 'roles'));
     }
     
     /**
@@ -45,17 +48,40 @@ class EmployeeController extends Controller
     */
     public function store(Request $request)
     {
-        $request->validate([
-            'name'      => 'required | string | max:45',
-            'phone'     => 'required | string | max:30',
-            'address'   => 'required | string | max:255',
-        ]);
+        $rules = [
+            'name'      => 'required|string|max:45',
+            'phone'     => 'required|string|max:30',
+            'address'   => 'required|string|max:255',
+        ];
+        if ($request->with_user) {
+            $rules = array_merge($rules, [
+                'username'      => 'required|string|max:100|min:3 |regex:/^[A-Za-z-0-9]+$/| unique:users',
+                'password'      => 'required|string|min:6',
+            ]);
+            $user_data['username'] = $request->username;
+            $user_data['password'] = bcrypt($request->password);
+
+        }
+        $request->validate($rules);
         
-        $employee = Employee::create($request->all());
-        
+        $employee = Employee::create($request->only(['name', 'phone', 'address','salary']));
+        if (isset($user_data)) {
+            $user_data['employee_id'] = $employee->id;
+            $user = User::create($user_data);
+            if ($request->roles) $user->roles()->attach($request->roles);
+            if ($request->permissions) $user->permissions()->attach($request->permissions);
+        }
+
         session()->flash('success', 'تمت اضافة الموظف بنجاح');
-        
-        return back();
+        if ($request->next == 'list') {
+            return redirect()->route('employees.index');
+        }
+        elseif ($request->next == 'show') {
+            return redirect()->route('employees.show', $employee);
+        }
+        else{
+            return back();
+        }
     }
     
     /**
@@ -66,6 +92,7 @@ class EmployeeController extends Controller
     */
     public function show(Request $request, Employee $employee)
     {
+        // dd($employee->isCashier());
         $year = isset($request->year) ? $request->year : date('Y');
         $month = isset($request->month) ? $request->month < 10 ? '0' . $request->month : $request->month : date('m');
         $fullMonth = $year . '-' . $month;
@@ -129,9 +156,9 @@ class EmployeeController extends Controller
     public function update(Request $request, Employee $employee)
     {
         $request->validate([
-            'name'      => 'required | string | max:45',
-            'phone'     => 'required | string | max:20',
-            'address'   => 'required | string | max:255',
+            'name'      => 'required|string|max:45',
+            'phone'     => 'required|string|max:20',
+            'address'   => 'required|string|max:255',
         ]);
         
         $employee->update($request->all());
@@ -149,15 +176,10 @@ class EmployeeController extends Controller
     */
     public function destroy(Employee $employee)
     {
-        if(count($employee->user->bills)) {
-            session()->flash('error', 'لا يمكن حذف الموظف');
-            return redirect()->route('users.index');
-        }else {
-            $employee->user->roles()->detach();
-    
-            $employee->user->permissions()->detach();
-    
-            $employee->user->delete();
+        // if($employee->user) {
+        //     session()->flash('error', 'لا يمكن حذف الموظف');
+        //     return redirect()->route('users.index');
+        // }else {
 
             $employee->delete();
     
@@ -165,6 +187,6 @@ class EmployeeController extends Controller
     
     
             return redirect()->route('employees.index');
-        }
+        // }
     }
 }

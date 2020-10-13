@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\{Account, Entry};
+use App\{Employee, Transaction};
 use Illuminate\Http\Request;
 
 class EntryController extends Controller
@@ -45,8 +46,8 @@ class EntryController extends Controller
     {
         $rules = [
         'amount'      => 'required | numeric',
-        'from_id'      => 'required | numeric',
-        'to_id'      => 'required | numeric',
+        'from_id'      => 'required | numeric|exists:accounts,id',
+        'to_id'      => 'required | numeric|exists:accounts,id',
         ];
         if($request->_collaborate == 'debt'){
             $rules['amount'] = 'required | numeric | max:' . (Account::findOrFail($request->to_id)->balance());
@@ -54,6 +55,21 @@ class EntryController extends Controller
         
         $request->validate($rules);
         $entry = Entry::create($request->except(['_token', '_method']));
+        if ($request->deducation) {
+            $accountable = Account::findOrFail($request->to_id)->accountable;
+            if (get_class($accountable) == Employee::class) {
+                $data = [
+                    'type' => Transaction::TYPE_DEDUCATION,
+                    'amount' => $request->deducation,
+                    'month' => date('Y-m'),
+                    'safe_id' => $request->safe_id,
+                    'created_at' => $request->created_at,
+                    'employee_id' => $accountable->id,
+                    'details' => 'عبارة عن خصم من الموظف رقم: ' . $accountable->id,
+                ];
+                Transaction::create($data);
+            }
+        }
         return back()->with('success', 'تمت العملية بنجاح');
         
     }

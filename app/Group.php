@@ -19,6 +19,8 @@ class Group extends Model
     
     public static function currentAssets() { return self::where('name', 'currentAssets')->first(); }
     
+    public static function cashiers() { return self::where('name', 'cashiers')->first(); }
+    
     public static function stores() {return self::where('name', 'stores')->first(); }
     
     public static function safes() {return self::where('name', 'safes')->first(); }

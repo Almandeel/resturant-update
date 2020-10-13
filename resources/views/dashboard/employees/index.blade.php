@@ -10,11 +10,17 @@
     @endcomponent
     <div class="box">
         <div class="box-header">
-            @permission('employees-create')
-                <button type="button" style="display:inline-block; margin-left:1%" class="btn btn-primary btn-sm pull-right showEmployeeModal">
-                    <i class="fa fa-plus">إضافة</i>
-                </button>
-            @endpermission
+            <h3 class="box-title"></h3>
+            <div class="box-tools">
+                @permission('employees-create')
+                    {{--  <button type="button" class="btn btn-primary showEmployeeModal">
+                        <i class="fa fa-plus">إضافة</i>
+                    </button>  --}}
+                    <a href="{{ route('employees.create') }}" class="btn btn-primary">
+                        <i class="fa fa-plus">إضافة</i>
+                    </a>
+                @endpermission
+            </div>
         </div>
         <div class="box-body">
             <table id="users-table" class="table table-bordered table-hover text-center">

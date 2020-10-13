@@ -15,7 +15,7 @@
         @method('PUT')
         <div class="box">
             <div class="box-header">
-                <h3 class="box-heading">
+                <h3 class="box-title">
                     <i class="fa fa-edit"></i>
                     <span>تعديل منتج: {{ $item->name }}</span>
                 </h3>

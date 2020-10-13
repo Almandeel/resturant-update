@@ -34,10 +34,9 @@
                             <td>{{ $transfer->fromStore->name }}</td>
                             <td>{{ $transfer->toStore->name }}</td>
                             <td>{{ $transfer->items }}</td>
-                            <td>{{ $transfer->created_at->format('Y-m-d H:i') }}</td>
+                            <td>{{ $transfer->created_at }}</td>
                             <td>
-                                <a class="btn btn-default btn-xs" href="{{ route('transferstores.show', $transfer->id) }}"><i class="fa fa-eye"></i> عرض</a>
-                                {{-- <a class="btn btn-warning btn-xs" href="{{ route('transferstores.edit', $transfer->id) }}"><i class="fa fa-edit"></i> تعديل</a> --}}
+                                
                             </td>
                         </tr>
                     @endforeach

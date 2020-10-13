@@ -6,16 +6,6 @@ use App\Traits\AuthableModel;
 class Entry extends Model
 {
     use AuthableModel;
-    public const TYPE_JOBCARD        =  10;
-    public const TYPE_BILL           = -11;
-    public const TYPE_BILL_RETURN    =  11;
-    public const TYPE_INVOICE        =  12;
-    public const TYPE_INVOICE_RETURN = -12;
-    public const TYPE_COLLECT        =  13;
-    // public const TYPE_PAYMENT        = -13;
-    // public const TYPE_EXPENSE        = -14;
-    // public const TYPE_INCOME         = -14;
-    
     public const TYPE_JOURNAL   = 1;
     public const TYPE_ADJUST    = 2;
     public const TYPE_ADVERSE   = 3;
@@ -46,7 +36,7 @@ class Entry extends Model
     
     protected $table = 'entries';
     // protected $primaryKey = 'pk';
-    protected $fillable = ['id', 'amount', 'from_id', 'type', 'to_id', 'details', 'bill_id', 'user_id'];
+    protected $fillable = ['id', 'amount', 'type', 'from_id', 'to_id', 'details', 'bill_id', 'user_id', 'created_at', 'updated_at'];
     
     public function reverse($details = null){
         $from_id = $this->to_id;
@@ -116,6 +106,10 @@ class Entry extends Model
         $attributes['user_id'] = auth()->user()->id;
         if(!array_key_exists('type', $attributes)){
             $attributes['type'] = self::TYPE_JOURNAL;
+        }else{
+            if (is_null($attributes['type'])) {
+                $attributes['type'] = self::TYPE_JOURNAL;
+            }
         }
         $model = static::query()->create($attributes);
         return $model;
