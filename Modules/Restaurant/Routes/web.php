@@ -23,4 +23,5 @@ Route::prefix('restaurant')->middleware('auth')->group(function () {
     Route::resource('halls', 'HallController');
     Route::resource('menus', 'MenuController');
     Route::resource('orders', 'OrderController');
+    Route::resource('cashiers', 'CashiersController',['as' => 'restaurant']);//->only(['index', 'show', 'edit', 'store', 'update']);
 });

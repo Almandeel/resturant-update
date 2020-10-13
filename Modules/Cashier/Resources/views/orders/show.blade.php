@@ -10,18 +10,25 @@
             padding: 30px;
         }
         .order-header{
-            border-bottom-width: 4px;
-            border-bottom-style: double;
             padding-bottom: 15px;
-            margin-bottom: 30px;
+            /*margin-bottom: 30px;*/
         }
         .order-body{
-            border-bottom: 1px dashed;
-            margin-bottom: 30px;
+            /*margin-bottom: 30px;*/
         }
         .order-footer{
             border-bottom: 1px dotted;
             padding-bottom: 30px;
+        }
+        .double-line, .line{
+            margin: 15pt 0;
+        }
+        .double-line{
+            border-bottom-width: 4px;
+            border-bottom-style: double;
+        }
+        .line{
+            border-bottom: 1px dashed;
         }
         .order-footer strong{
             text-decoration: underline;
@@ -39,11 +46,15 @@
             padding: 15px;
             text-align: center;
         }
+        .order{
+            box-shadow: 2px 2px #eee, 4px 4px #ddd, 6px 6px #ccc, 8px 8px #bbb, 10px 10px #aaa, 0px 0px 20px 2px rgb(153 153 153 / 0.4);
+        }
         @media print{
             .order{
                 margin: 0;
                 border: none;
                 width: 100%;
+                box-shadow: none;
             }
             .order-buttons{
                 display: none;
@@ -65,15 +76,26 @@
                 <br>
                 {{ config('cashier.name') }}
             </h3>
+            @if (!is_null($order->orderTable))
+                <div class="clearfix">
+                    <div class="pull-right">
+                        <strong>رقم الطاولة</strong>: #{{ $order->orderTable->number }}
+                    </div>
+                    <div class="pull-left">
+                        <strong>الصالة</strong>: {{ $order->hall->name }}
+                    </div>
+                </div>
+            @endif
             <div class="clearfix">
                 <div class="pull-right">
-                    <strong>التاريخ</strong>: {{ date('Y/m/d') }}
+                    <strong>رقم الطلب</strong>: #{{ $order->number }}
                 </div>
                 <div class="pull-left">
-                    <strong>رقم الطلب</strong>: #{{ $order->number }}
+                    <strong>التاريخ</strong>: {{ $order->created_at->format('Y/m/d') }}
                 </div>
             </div>
         </div>
+        <div class="double-line"></div>
         <div class="order-body">
             <table class="table table-striped">
                 <thead>
@@ -99,24 +121,50 @@
             </table>
         </div>
         <div class="order-footer">
-            <table class="table">
-                <tr>
-                    <th><strong>الضريبة</strong></th>
-                    <td><p>{{ $order->tax }}</p></td>
-                </tr>
-                <tr>
-                    <th><strong>الخصم</strong></th>
-                    <td><p>{{ $order->discount }}</p></td>
-                </tr>
-                <tr>
-                    <th><strong>الإجمالي</strong></th>
-                    <td><p>{{ $order->total }}</p></td>
-                </tr>
-                <tr>
-                    <th><strong>الصافي</strong></th>
-                    <td><p>{{ $order->net }}</p></td>
-                </tr>
-            </table>
+            <div class="line"></div>
+            <div class="order-details">
+                <table class="table">
+                    <tr>
+                        <th><strong>الضريبة</strong></th>
+                        <td><p>{{ $order->tax }}</p></td>
+                    </tr>
+                    <tr>
+                        <th><strong>الخصم</strong></th>
+                        <td><p>{{ $order->discount }}</p></td>
+                    </tr>
+                    <tr>
+                        <th><strong>الإجمالي</strong></th>
+                        <td><p>{{ $order->total }}</p></td>
+                    </tr>
+                    <tr>
+                        <th><strong>الصافي</strong></th>
+                        <td><p>{{ $order->net }}</p></td>
+                    </tr>
+                </table>
+            </div>
+            @if ($order->isDelivery())
+                <div class="line"></div>
+                <div class="delivery-details">
+                    <table class="table">
+                        <tr>
+                            <th><strong>السائق</strong></th>
+                            <td><p>{{ $order->delivery->driver->name }}</p></td>
+                        </tr>
+                        <tr>
+                            <th><strong>العميل</strong></th>
+                            <td><p>{{ $order->delivery->name }}</p></td>
+                        </tr>
+                        <tr>
+                            <th><strong>رقم الهاتف</strong></th>
+                            <td><p>{{ $order->delivery->phone }}</p></td>
+                        </tr>
+                        <tr>
+                            <th><strong>العنوان</strong></th>
+                            <td><p>{{ $order->delivery->address }}</p></td>
+                        </tr>
+                    </table>
+                </div>
+            @endif
         </div>
         <div class="order-buttons">
             <button class="btn btn-default" onclick="window.print()">

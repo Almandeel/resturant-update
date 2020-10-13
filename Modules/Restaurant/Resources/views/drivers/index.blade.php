@@ -1,5 +1,6 @@
 @extends('restaurant::layouts.master', [
     'title' => __('restaurant::drivers.list'),
+    'datatable' => true,
     'crumbs' => [
         ['url' => route('drivers.index'), 'title' => __('restaurant::drivers.list'), 'icon' => 'fa fa-car'],
     ]
@@ -16,7 +17,7 @@
 
         </div>
         <div class="box-body">
-            <table class="table table-bordered table-hover text-center datatable">
+            <table class="table table-bordered table-hover text-center datatable-paged">
                 <thead>
                     <tr>
                         <th>@lang('restaurant::global.name')</th>

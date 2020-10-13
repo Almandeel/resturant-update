@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 class Table extends Model
 {
     public const STATUS_AVAILABLE = 1;
+    public const STATUS_BUSY = 2;
     public const STATUS_UNAVAILABLE = 0;
     public const STATUSES = [
     self::STATUS_AVAILABLE => 'available',
+    self::STATUS_BUSY => 'busy',
     self::STATUS_UNAVAILABLE => 'unavailable',
     ];
     public const STATUSES_CLASSES = [
     self::STATUS_AVAILABLE => 'success',
+    self::STATUS_BUSY => 'info',
     self::STATUS_UNAVAILABLE => 'warning',
     ];
     
@@ -22,20 +25,20 @@ class Table extends Model
     * @var array
     */
     protected $fillable = [
-    'number', 'status', 'hall_id',
+    'id', 'number', 'status', 'hall_id',
     ];
     
-    public function getStatus($type = 'value'){
-        $status = is_null($this->closed_at) ? self::STATUS_OPEN : self::STATUS_CLOSED;
-        if ($type == 'name') {
-            return self::STATUSES[$status];
+    public function getStatusAttribute($status){
+        if ($this->open_orders->count()) {
+            return self::STATUS_BUSY;
         }
-        elseif ($type == 'class') {
-            return self::STATUSES_CLASSES[$status];
+        elseif ($status == self::STATUS_BUSY) {
+            return self::STATUS_AVAILABLE;
         }
         return $status;
-
-
+    }
+    
+    public function getStatus($type = 'value'){
         if ($type == 'name') {
             return self::STATUSES[$this->status];
         }
@@ -57,6 +60,10 @@ class Table extends Model
         return $status;
     }
     
+    public function getOpenOrdersAttribute(){
+        return $this->orders->where('status', Order::STATUS_OPEN);
+    }
+    
     public function openOrders(){
         return $this->orders->where('status', Order::STATUS_OPEN);
     }
@@ -70,6 +77,7 @@ class Table extends Model
     }
     
     public function checkStatus($status){
+        $status_type = gettype($status);
         if ($status_type == 'string') {
             return $this->getStatus('name') == $status;
         }
@@ -83,6 +91,10 @@ class Table extends Model
     
     public function isAvailable(){
         return $this->checkStatus('available');
+    }
+    
+    public function isBusy(){
+        return $this->checkStatus('busy');
     }
     
     public function isUnavailable(){
@@ -108,16 +120,17 @@ class Table extends Model
         parent::boot();
         static::creating(function($table){
             if (is_null($table->number)) {
-                $table->number = Table::all()->count() + 1;
+                $table->id = Table::all()->count() + 1;
+                $table->number = $table->id;
             }
         });
     }
-
+    
     public static function allAvailable(){
         return static::with(['orders' => function($query) {
-                    $query->where('status', '!=', Order::STATUS_OPEN)
-                          ->whereNull('closed_at');
-                }
-            ])->get();
+            $query->where('status', '!=', Order::STATUS_OPEN)
+            ->whereNull('closed_at');
+        }
+        ])->get();
     }
 }

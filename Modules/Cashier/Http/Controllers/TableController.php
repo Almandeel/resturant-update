@@ -5,7 +5,7 @@ namespace Modules\Cashier\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Restaurant\Models\Table;
+use Modules\Restaurant\Models\{Table, Order};
 class TableController extends Controller
 {
     /**
@@ -38,8 +38,24 @@ class TableController extends Controller
      * @param  Table  $table
      * @return \Illuminate\Http\Response
      */
-    public function show(Table $table)
+    public function show(Request $request, Table $table)
     {
-        return  view('cashier::tables.show', compact('table'));
+        $builder = Order::where('table_id', $table->id)->orderBy('updated_at');
+        $from_date = $request->has('from_date') ? $request->from_date : date('Y-m-d');
+        $to_date = $request->has('to_date') ? $request->to_date : date('Y-m-d');
+        
+        $status = $request->has('status') ? $request->status : 'open';
+        
+        $from_date_time = $from_date . ' 00:00:00';
+        $to_date_time = $to_date . ' 23:59:59';
+        
+        $builder->whereBetween('created_at', [$from_date_time, $to_date_time]);
+        if ($status != 'all') {
+            $builder->where('status', Order::getTypeValue($status));
+        }
+        
+        $orders = $builder->get();//->sortByDesc('status');
+        // dd($table->open_orders, $table->getStatus('name'));
+        return view('cashier::tables.show', compact('table', 'orders', 'status', 'from_date', 'to_date'));
     }
 }

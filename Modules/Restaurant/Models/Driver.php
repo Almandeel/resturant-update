@@ -2,12 +2,13 @@
 
 namespace Modules\Restaurant\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Driver extends Model
 {
     public const STATUS_AVAILABLE = 1;
-    public const STATUS_BUSY = 1;
+    public const STATUS_BUSY = 2;
     public const STATUS_UNAVAILABLE = 0;
     public const STATUSES = [
     self::STATUS_AVAILABLE => 'available',
@@ -26,8 +27,19 @@ class Driver extends Model
     * @var array
     */
     protected $fillable = [
-        'name', 'phone', 'address', 'status',
+    'name', 'phone', 'address', 'status',
     ];
+    
+    public function getStatusAttribute($status){
+        if ($this->open_orders->count()) {
+            return self::STATUS_BUSY;
+        }
+        elseif ($status == self::STATUS_BUSY) {
+            return self::STATUS_AVAILABLE;
+        }
+        return $status;
+    }
+    
     public function getStatus($type = 'value'){
         if ($type == 'name') {
             return self::STATUSES[$this->status];
@@ -40,8 +52,15 @@ class Driver extends Model
     
     public function displayStatus($format = 'none'){
         $status = __('restaurant::drivers.statuses.' . $this->getStatus('name'));
-        if ($format == 'html') {
+        if ($format == 'label') {
             $builder = '<span class="label label-' . $this->getStatus('class') . '">';
+            $builder .= $status;
+            $builder .= '</span>';
+            
+            return $builder;
+        }
+        else if ($format == 'text') {
+            $builder = '<span class="text-' . $this->getStatus('class') . '">';
             $builder .= $status;
             $builder .= '</span>';
             
@@ -51,6 +70,7 @@ class Driver extends Model
     }
     
     public function checkStatus($status){
+        $status_type = gettype($status);
         if ($status_type == 'string') {
             return $this->getStatus('name') == $status;
         }
@@ -70,9 +90,28 @@ class Driver extends Model
         return $this->checkStatus('unavailable');
     }
     
-    public function orders()
+    public function isBusy(){
+        return $this->checkStatus('busy');
+    }
+    
+    
+    public function getOrdersAttribute()
     {
-        return $this->hasMany(Order::class);
+        $orders = new Collection();
+        foreach ($this->deliveries as $delivery) {
+            $orders->push($delivery->order);
+        }
+        return $orders;
+    }
+    
+    public function getOpenOrdersAttribute(){
+        return $this->orders->where('status', Order::STATUS_OPEN);
+    }
+    
+    
+    public function deliveries()
+    {
+        return $this->hasMany(Delivery::class);
     }
     
     public static function allAvailable(){
