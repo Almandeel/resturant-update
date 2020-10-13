@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TransferStore extends Model
 {
-    protected $fillable = ['from_store', 'to_store', 'user_id'];
+    protected $fillable = ['from_store', 'to_store', 'items'];
 
     public function fromStore() {
         return $this->belongsTo('App\Store', 'from_store');
@@ -14,9 +14,5 @@ class TransferStore extends Model
 
     public function toStore() {
         return $this->belongsTo('App\Store', 'to_store');
-    }
-
-    public function itemsTransfer() {
-        return $this->hasMany('App\TransferStoreItem');
     }
 }

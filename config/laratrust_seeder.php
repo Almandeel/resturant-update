@@ -41,6 +41,28 @@ return [
             'orders' => 'c,r,u,d',
         ],
 
+        'cashier' => [
+            'attachments' => 'r',
+            'customers' => 'r',
+            'items' => 'r',
+            'stores' => 'r',
+            'salaries' => 'r',
+            'units' => 'r',
+            'payments' => 'r',
+            'cheques' => 'r',
+            'expenses' => 'r',
+            'transfers' => 'r',
+            'safes' => 'r',
+            'accounts' => 'r,u',
+            'entries' => 'r',
+            'drivers' => 'r,u',
+            'waiters' => 'r,u',
+            'halls' => 'r,u',
+            'tables' => 'r,u',
+            'menus' => 'r,u',
+            'orders' => 'c,r,u,p',
+        ],
+
     ],
     'permission_structure' => [
         'superadmin' => [

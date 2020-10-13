@@ -14,7 +14,7 @@
             <div class="col-xs-12 col-md-8">
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-heading">
+                        <h3 class="box-title">
                             <span>منتج: {{ $item->name }}</span>
                         </h3>
                     </div>

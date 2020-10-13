@@ -91,4 +91,29 @@ class User extends Authenticatable
         }
         return $all;
     }
+    
+    public static function cashiers()
+    {
+        return Role::cashier()->users;
+    }
+    
+    public static function create(array $attributes)
+    {
+        if (array_key_exists('employee_id', $attributes) && !array_key_exists('phone', $attributes)) {
+            $employee = Employee::find($attributes['employee_id']);
+            if ($employee->phone) {
+                $attributes['phone'] = $employee->phone;
+            }
+        }
+        
+        return static::query()->create($attributes);
+    }
+    
+    public function delete()
+    {
+        $this->roles()->detach();
+        $this->permissions()->detach();
+        return parent::delete();
+    }
+    
 }

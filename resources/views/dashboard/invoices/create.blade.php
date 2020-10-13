@@ -351,10 +351,10 @@
 								</div>
 							</td>
 							<td>
-								<input type="number" min="0" step="0.01" class="form-control input input-price price-purchase" name="purchases[]" value="`+fillterNumber(unit.price_purchase)+`" />
+								<input type="number" min="0" step="0.01" class="form-control input input-price price-purchase" name="purchases[]" value="`+number_filter(unit.price_purchase)+`" />
 							</td>
 							<td>
-								<input type="number" min="0" step="0.01" class="form-control input input-price price-sell" name="sells[]" value="`+fillterNumber(unit.price_sell)+`" />
+								<input type="number" min="0" step="0.01" class="form-control input input-price price-sell" name="sells[]" value="`+number_filter(unit.price_sell)+`" />
 							</td>
 							<td class="item-total"></td>	
 							<td>
@@ -410,11 +410,11 @@
 				$('input.input-payment').each(function() {
 					payments += Number($(this).val())
 				})
-				var remain = fillterNumber($('#items-table tfoot tr .total').text()) - payments;
+				var remain = number_filter($('#items-table tfoot tr .total').text()) - payments;
 				
 				$('input#remain-display').val(remain)
 				let totalPayed = 0;
-				$('input#remain').val(fillterNumber($('#items-table tfoot tr .total').text()) - payments)
+				$('input#remain').val(number_filter($('#items-table tfoot tr .total').text()) - payments)
 				$('input#payed').val(payments)
 			}
 
@@ -423,21 +423,21 @@
 				var itemsCount = $('#items-table tbody tr input.input-receive[type="number"]').filter(function () {
 					return this.value > 0;
 				}).length;
-				/*var chargesSafe = fillterNumber($('input#chargesSafe').val()),
-					chargesBank = fillterNumber($('input#chargesBank').val());
+				/*var chargesSafe = number_filter($('input#chargesSafe').val()),
+					chargesBank = number_filter($('input#chargesBank').val());
 				var charges = chargesSafe + chargesBank;
 				var chargesPerItem = charges / itemsCount;*/
 				$('#items-table tbody tr').each(function() {
-					var quantity = fillterNumber($(this).find("input.input-quantity").val());
+					var quantity = number_filter($(this).find("input.input-quantity").val());
 					var ra = $(this).find("input.receive-all").prop('checked');
-					var price_purchase = fillterNumber($(this).find("input.price-purchase").val());
-					var price_sell = fillterNumber($(this).find("input.price-sell").val());
+					var price_purchase = number_filter($(this).find("input.price-purchase").val());
+					var price_sell = number_filter($(this).find("input.price-sell").val());
 					if(ra) $(this).find("input.input-receive").val(quantity);
 					$(this).find("input.input-receive").prop('max', quantity)
 					var amount = quantity * price_sell;
 					totalQ += quantity;
 					@if (!$bill)
-						var r = fillterNumber($(this).find("input.input-receive").val());
+						var r = number_filter($(this).find("input.input-receive").val());
 						totalR += r;
 					@endif
 					totalPurchases += price_purchase;

@@ -2,6 +2,11 @@
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/', 'DashboardController@index')->name('dashboard.index');
+    
+    Route::get('/home', function(){
+        return redirect()->route('dashboard.index');
+    })->name('dashboard.home');
+
     Route::get('/loader', function(){
         return view('components.loader');
     });
@@ -113,10 +118,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'management'], function() {
     
     //example excel route
     Route::get('example/excel', 'DashboardController@example')->name('excel.example');
-
-
-    // get items from sote with ajax
-    Route::get('get/items/{id}', 'TransferStoreController@getItems');
     
 });
 

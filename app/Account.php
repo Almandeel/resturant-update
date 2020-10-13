@@ -10,8 +10,13 @@ class Account extends Model
     'safe' => 'النقدية', 'bank' => 'البنك', 'capital' => 'رأس المال'
     ];
     protected $fillable = [
-    'name', 'group_id',
+        'name', 'group_id',
     ];
+
+    public function accountable()
+    {
+        return $this->morphTo();
+    }
     
     public function group()
     {
