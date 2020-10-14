@@ -47,11 +47,17 @@
                                     </tr>
                                     <tr>
                                         <th>تاريخ الانتهاء</th>
-                                        <td>{{ $subscription->end_date }}</td>
+                                        <td>
+                                            {{ $subscription->end_date }}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>طريقة الدفع</th>
                                         <td>{{ $subscription->payment_type ? 'الكتروني' : 'نقدا' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>الكود</th>
+                                        <td>{!! DNS1D::getBarcodeHTML($subscription->id, "C39+",1.4,44) !!}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -77,7 +83,7 @@
                                 @endif
 
                                 @permission('subscriptions-print')
-                                    <button onclick="window.print()" class="btn btn-default btn-xs print" > <i class="fa fa-print"> طباعة </i></button>
+                                    <button id="print" class="btn btn-default btn-xs print" > <i class="fa fa-print"> طباعة </i></button>
                                 @endpermission
                             </div>
                         </div>
@@ -86,12 +92,21 @@
                     </div>
                 </div>
             </div>
-            <div class="box-footer">
+            {{-- <div id="bar" class="box-footer">
                 <div class="box-header">
-                    {!! DNS1D::getBarcodeHTML($subscription->id, "C39",1.4,44) !!}
+                    {!! DNS1D::getBarcodeHTML($subscription->id, "C39+",1.4,44) !!}
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 
 @endsection
+
+
+@push('js')
+    <script>
+        $('#print').click(function () {
+            window.print()
+        })
+    </script>
+@endpush
