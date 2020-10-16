@@ -39,6 +39,9 @@
     @permission('employees-read')
         <li class="{{ (request()->segment(2) == 'cashiers') ? 'active' : '' }}"><a href="{{ route('restaurant.cashiers.index') }}"><i class="fa fa-users"></i><span>موظفو الكاشير</span></a></li>
     @endpermission
+    @permission('halls-read')
+        <li class="{{ (request()->segment(2) == 'halls') ? 'active' : '' }}"><a href="{{ route('halls.index') }}"><i class="fa fa-users"></i><span>الصالات</span></a></li>
+    @endpermission
     @stack('sidebar_items')
 @endpush
 @push('dashboard_content')

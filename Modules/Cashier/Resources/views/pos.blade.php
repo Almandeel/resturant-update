@@ -503,6 +503,13 @@
                                                     <i class="fa fa-times-circle"></i>
                                                     <span>إلغاء</span>
                                                 </a>
+                                                @if(request()->order_id) 
+                                                <a href="{{ url()->previous() }}" class="btn btn-lg btn-success btn-block">
+                                                    {{--  btn-default btn-error">  --}}
+                                                    <i class="fa fa-check"></i>
+                                                    <span>تم</span>
+                                                </a>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

@@ -40,6 +40,9 @@ class GroupsAccountsSeeder extends Seeder
         
         $customersGroup = Group::firstOrCreate(['name' => 'customers', 'group_id' => $currentAssetsGroup->id]);
         $this->command->info('Creating Customers Group ...');
+
+        $cashiersGroup = Group::firstOrCreate(['name' => 'cashiers', 'group_id' => $currentAssetsGroup->id]);
+        $this->command->info('Creating cashiers Group ...');
         
         $collaboratorsGroup = Group::firstOrCreate(['name' => 'collaborators', 'group_id' => $currentAssetsGroup->id]);
         $this->command->info('Creating Collaborators Group ...');

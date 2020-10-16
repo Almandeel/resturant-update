@@ -81,9 +81,9 @@
                     <div class="pull-right">
                         <strong>رقم الطاولة</strong>: #{{ $order->orderTable->number }}
                     </div>
-                    <div class="pull-left">
+                    {{-- <div class="pull-left">
                         <strong>الصالة</strong>: {{ $order->hall->name }}
-                    </div>
+                    </div> --}}
                 </div>
             @endif
             <div class="clearfix">

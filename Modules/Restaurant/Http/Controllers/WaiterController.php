@@ -45,9 +45,9 @@ class WaiterController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name'      => 'required | string | max:100 | min:3|regex:/^[\sA-Za-z]+$/',
-            'phone'     => 'required | string | min:10|regex:/^[0-9]+$/',
-            'address'     => 'nullable | string|regex:/^[.\sA-Za-z0-9]+$/',
+            'name'      => 'required | string | max:100 | min:3',
+            'phone'     => 'required | string | min:10',
+            'address'     => 'nullable | string',
         ]);
 
         $waiter = Waiter::create($request->all());
@@ -93,9 +93,9 @@ class WaiterController extends Controller
     public function update(Request $request, Waiter $waiter)
     {
         request()->validate([
-            'name'      => 'required | string | max:100 | min:3|regex:/^[\sA-Za-z]+$/',
-            'phone'     => 'required | string | min:10|regex:/^[0-9]+$/',
-            'address'     => 'nullable | string|regex:/^[.\sA-Za-z0-9]+$/',
+            'name'      => 'required | string | max:100 | min:3',
+            'phone'     => 'required | string | min:10',
+            'address'     => 'nullable | string',
         ]);
 
         $waiter->update($request->all());

@@ -45,9 +45,9 @@ class DriverController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name'      => 'required | string | max:100 | min:3|regex:/^[\sA-Za-z]+$/',
+            'name'      => 'required | string | max:100 | min:3',
             'phone'     => 'required | string | min:10|regex:/^[0-9]+$/',
-            'address'     => 'nullable | string|regex:/^[.\sA-Za-z0-9]+$/',
+            'address'     => 'nullable | string',
         ]);
 
         $driver = Driver::create($request->all());
@@ -93,9 +93,9 @@ class DriverController extends Controller
     public function update(Request $request, Driver $driver)
     {
         request()->validate([
-            'name'      => 'required | string | max:100 | min:3|regex:/^[\sA-Za-z]+$/',
+            'name'      => 'required | string | max:100 | min:3',
             'phone'     => 'required | string | min:10|regex:/^[0-9]+$/',
-            'address'     => 'nullable | string|regex:/^[.\sA-Za-z0-9]+$/',
+            'address'     => 'nullable | string',
         ]);
 
         $driver->update($request->all());
