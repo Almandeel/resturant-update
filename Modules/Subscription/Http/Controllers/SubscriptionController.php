@@ -130,4 +130,18 @@ class SubscriptionController extends Controller
 
         return redirect()->route('subscriptions.index')->with('success', 'تمت العملية بنجاح');
     }
+
+    public function barcode($id) 
+    {
+        $subscriptions;
+        if($id == "all")
+        {
+            $subscriptions = Subscription::all();
+        }
+        else 
+        {
+            $subscriptions = Subscription::where('id', $id)->get();
+        }
+        return view('subscription::subscriptions.barcode', compact('subscriptions'));
+    }
 }

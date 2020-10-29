@@ -25,8 +25,8 @@ class CreateAccountsTable extends Migration
             $table->increments('id');
             $table->string('name', 45)->nullable();
             $table->unsignedInteger('group_id')->nullable();
-            $table->unsignedInteger('accountable_id');
-            $table->string("accountable_type");
+            $table->unsignedInteger('accountable_id')->nullable();
+            $table->string("accountable_type")->nullable();
             
             $table->index(["group_id"], 'fk_accounts_groups1_idx');
             $table->timestamps();

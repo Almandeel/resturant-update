@@ -85,7 +85,7 @@
                         @endif
 
                         @permission('subscriptions-print')
-                            <button id="print" class="btn btn-default btn-xs print" > <i class="fa fa-print"> طباعة </i></button>
+                            <a href="{{ route('subscriptions.barcodes', $subscription->id) }}" class="btn btn-default btn-xs print" > <i class="fa fa-print"> طباعة </i></a>
                         @endpermission
                     </div>
             </div>

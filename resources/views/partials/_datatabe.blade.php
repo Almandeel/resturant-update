@@ -60,14 +60,14 @@
     })
 </script>  --}}
 
-<link rel="stylesheet" type="text/css" href="{{ asset('libs/datatables/datatables.min.css') }}">
-    <script type="text/javascript" src="{{ asset('libs/datatables/js/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('libs/datatables/js/dataTables.buttons.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('libs/datatables/js/jszip.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('libs/datatables/js/pdfmake.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('libs/datatables/js/vfs_fonts.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('libs/datatables/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('libs/datatables/buttons.print.js') }}"></script>
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('libs/datatables/datatables.min.css') }}"> --}}
+    <script type="text/javascript" src="{{ asset('libs/datatables/jquery.dataTables.min.js') }}"></script>
+    {{-- <script type="text/javascript" src="{{ asset('libs/datatables/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/datatables/jszip.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/datatables/pdfmake.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/datatables/vfs_fonts.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/datatables/buttons.html5.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('libs/datatables/buttons.print.js') }}"></script> --}}
     <style type="text/css">
         .data-table-container {
             padding: 10px;
