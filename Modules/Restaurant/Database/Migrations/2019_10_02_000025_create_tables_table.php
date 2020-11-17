@@ -23,7 +23,7 @@ class CreateTablesTable extends Migration
     Schema::create($this->tableName, function (Blueprint $table) {
       $table->increments('id');
       $table->integer('number');
-      $table->integer('status')->nullable();
+      $table->integer('status')->default(1);
       $table->unsignedInteger('hall_id')->nullable();
       $table->timestamps();
     });

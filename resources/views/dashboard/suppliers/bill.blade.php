@@ -734,8 +734,8 @@
 				});
 			})
 			function calculateTotals(){
-				var payed = number_filter($('#payments-table .totalAmount').text());
-				var total = number_filter($('#items-table .totalAmount').text());
+				var payed = fillterNumber($('#payments-table .totalAmount').text());
+				var total = fillterNumber($('#items-table .totalAmount').text());
 				var remain = total - payed;
 				$('.bill-total').text(total)
 				$('.bill-totalPayed').text(payed)

@@ -2,19 +2,32 @@
     'skin' => 'green'
 ])
 @push('dashboard_navbar_items')
-    @permission('orders-create')
-        <li class="{{ (request()->segment(2) == 'pos') ? 'active' : '' }}"><a href="{{ route('cashier.pos') }}"><i class="icon-pos"></i><span>نافذة البيع</span></a></li>
-    @endpermission
-    @permission('orders-read')
-        <li class="{{ (request()->segment(2) == 'orders') ? 'active' : '' }}"><a href="{{ route('cashier.orders.index') }}"><i class="icon-order"></i><span>الطلبات</span></a></li>
-    @endpermission
-    @permission('safes-read')
-        <li class="{{ (request()->segment(2) == 'safe') ? 'active' : '' }}"><a href="{{ route('cashier.safe') }}"><i class="fa fa-money"></i><span>الخزنة</span></a></li>
-    @endpermission
-    @permission('reports-read')
-        <li class="{{ (request()->segment(2) == 'reports') ? 'active' : '' }}"><a href="{{ route('cashier.reports.index') }}"><i class="fa fa-print"></i><span>التقارير</span></a></li>
-    @endpermission
-    @stack('navbar_items')
+    @if(auth()->user()->id != 1)
+        @php 
+            $cashier = \App\Employee::find(auth()->user()->employee_id);
+            $opening_entry = $cashier->openingEntry(date('y-m-d'));
+            $close_entry = $cashier->closeEntry(date('y-m-d'));
+        @endphp
+
+        @if($opening_entry && !$close_entry)
+            @permission('orders-create')
+                <li class="{{ (request()->segment(2) == 'pos') ? 'active' : '' }}"><a href="{{ route('cashier.pos') }}"><i class="icon-pos"></i><span>نافذة البيع</span></a></li>
+            @endpermission
+        @endif
+        @permission('orders-read')
+            <li class="{{ (request()->segment(2) == 'orders') ? 'active' : '' }}"><a href="{{ route('cashier.orders.index') }}"><i class="icon-order"></i><span>الطلبات</span></a></li>
+        @endpermission
+        
+        @permission('safes-read')
+            <li class="{{ (request()->segment(2) == 'safe') ? 'active' : '' }}"><a href="{{ route('cashier.safe') }}"><i class="fa fa-money"></i><span>الخزنة</span></a></li>
+        @endpermission
+
+        @permission('reports-read')
+            <li class="{{ (request()->segment(2) == 'reports') ? 'active' : '' }}"><a href="{{ route('cashier.reports.index') }}"><i class="fa fa-print"></i><span>التقارير</span></a></li>
+        @endpermission
+
+        @stack('navbar_items')
+    @endif
 @endpush
 @push('dashboard_navbar_left_items')
     @stack('navbar_left_items')

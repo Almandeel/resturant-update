@@ -48,6 +48,7 @@ class Employee extends Model
         $to_date_time = $date . ' 23:59:59';
         return Entry::where('from_id', $account->id)->whereBetween('created_at', [$from_date_time, $to_date_time])->orderBy('id')->where('type', Entry::TYPE_JOURNAL)->first();
     }
+
     public function closeEntry($date){
         $account = $this->account;
         $from_date_time = $date . ' 00:00:00';

@@ -566,10 +566,10 @@
             let total_discounts = 0;
             let total_nets = 0;
             for(let index = 0; index < orders_quantities.length; index++){
-                let quantity = number_filter($(orders_quantities[index]).text());
-                let amount = number_filter($(orders_amounts[index]).text());
-                let discounts = number_filter($(orders_discounts[index]).text());
-                let nets = number_filter($(orders_nets[index]).text());
+                let quantity = fillterNumber($(orders_quantities[index]).text());
+                let amount = fillterNumber($(orders_amounts[index]).text());
+                let discounts = fillterNumber($(orders_discounts[index]).text());
+                let nets = fillterNumber($(orders_nets[index]).text());
 
                 total_quantities += quantity;
                 total_amounts += amount;

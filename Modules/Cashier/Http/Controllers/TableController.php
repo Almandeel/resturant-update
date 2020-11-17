@@ -28,7 +28,6 @@ class TableController extends Controller
     public function index()
     {
         $tables = Table::all();
-        
         return  view('cashier::tables.index', compact('tables'));
     }
 
