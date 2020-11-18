@@ -93,6 +93,19 @@
                 </div>
             </div>
             @endpermission
+            @permission('menus-read')
+                <div class="col-lg-12 col-xs-12">
+                    <div class="small-box bg-yellow text-right">
+                        <div class="inner">
+                            <h3>{{ config('cashier.name') }}</h3>
+                        </div>
+                        <div class="icon pull-right">
+                            <i class="fa fa-windows"></i>
+                        </div>
+                        <a href="{{ route('cashier.dashboard') }}" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i>  عرض  </a>
+                    </div>
+                </div>
+			@endpermission
         </div>
     </div>
 @endpush
