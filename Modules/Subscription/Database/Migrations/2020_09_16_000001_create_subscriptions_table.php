@@ -24,11 +24,13 @@ class CreateSubscriptionsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('customer_id')->nullable();
+            $table->unsignedInteger('user_id')->nullable();
             $table->tinyInteger('payment_type')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->date('canceled_at')->nullable();
             $table->unsignedInteger('plan_id');
+            $table->double('amount');
 
             $table->index(["plan_id"], 'fk_subscriptions_plan_idx');
             $table->index(["customer_id"], 'fk_subscriptions_customer_idx');
@@ -43,6 +45,11 @@ class CreateSubscriptionsTable extends Migration
 
             $table->foreign('customer_id', 'fk_subscriptions_customer_idx')
             ->references('id')->on('customers')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('user_id')
+            ->references('id')->on('users')
             ->onDelete('cascade')
             ->onUpdate('cascade');
         });

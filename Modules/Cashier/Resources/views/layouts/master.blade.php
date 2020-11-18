@@ -45,6 +45,10 @@
     @permission('drivers-read')
         <li class="{{ (request()->segment(2) == 'drivers') ? 'active' : '' }}"><a href="{{ route('cashier.drivers.index') }}"><i class="icon-driver"></i><span>السائقين</span></a></li>
     @endpermission
+
+    @permission('subscriptions-read')
+        <li class="{{ (request()->segment(2) == 'subscriptions') ? 'active' : '' }}"><a href="{{ route('subscriptions.index') }}"><i class="fa fa-list"></i><span>  الاشتراكات </span></a></li>
+    @endpermission
     @stack('sidebar_items')
 @endpush
 @push('dashboard_content')

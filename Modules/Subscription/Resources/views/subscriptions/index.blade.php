@@ -12,11 +12,20 @@
     @endcomponent
     <div class="box">
         <div class="box-header">
-            @permission('subscriptions-create')
-                <button type="button" style="display:inline-block; margin-left:1%" class="btn btn-primary btn-sm pull-right subscription" data-toggle="modal" data-target="#subscription">
-                    <i class="fa fa-plus"> إضافة</i>
-                </button>
-            @endpermission
+
+            @php 
+                $cashier = \App\Employee::find(auth()->user()->employee_id);
+                $opening_entry = $cashier->openingEntry(date('y-m-d'));
+                $close_entry = $cashier->closeEntry(date('y-m-d'));
+            @endphp
+
+            @if($opening_entry && !$close_entry)
+                @permission('subscriptions-create')
+                    <button type="button" style="display:inline-block; margin-left:1%" class="btn btn-primary btn-sm pull-right subscription" data-toggle="modal" data-target="#subscription">
+                        <i class="fa fa-plus"> إضافة</i>
+                    </button>
+                @endpermission
+            @endif
 
             @permission('subscriptions-print')
                 <a  style="display:inline-block; margin-left:1%" href="{{ route('subscriptions.barcodes', 'all') }}" class="btn btn-default pull-right  btn-sm print" > <i class="fa fa-print"> طباعة </i></a>
@@ -43,7 +52,7 @@
                                 {{ Carbon\Carbon::parse(date('Y-m-d'))->lte($subscription->end_date) ? 'ساري' : 'منتهي' }}
                             </td>
                             <td>
-                                @permission('subscriptions-create')
+                                @permission('subscriptions-read')
                                     <a href="{{ route('subscriptions.show', $subscription->id) }}" class="btn btn-default btn-xs"><i class="fa fa-eye">عرض</i></a>
                                 @endpermission
 

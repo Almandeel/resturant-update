@@ -17,6 +17,8 @@ class Subscription extends Model
         'start_date',
         'end_date',
         'plan_id',
+        'user_id',
+        'amount',
         'canceled_at'
     ];
     

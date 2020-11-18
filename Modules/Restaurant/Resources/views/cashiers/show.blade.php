@@ -182,7 +182,47 @@
                     <th class="total-total">0.00</th>
                     <th class="total-discount">0.00</th>
                     <th class="total-net">0.00</th>
-                    <th colspan="2"></th>
+                    <th colspan="1"></th>
+                </tfoot>
+            </table>
+
+            <h4>
+                <i class="icon-order"></i>
+                <span>الاشتراكات</span>
+            </h4>
+            <table id="subscription-table" class="table table-bordered table-striped table-hover datatable">
+                <thead>
+                    <tr>
+                        <th>تاريخ الإنشاء</th>
+                        <th>رقم الاشتراك</th>
+                        <th>العميل</th>
+                        <th>الباقة</th>
+                        <th>المبلغ</th>
+                        <th>الخيارات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($subscriptions as $subscription)
+                        <tr>
+                            <td>{{ $subscription->created_at->format('Y-m-d') }}</td>
+                            <td>{{ $subscription->id }}</td>
+                            <td>{{ $subscription->customer->name }}</td>
+                            <td>{{ $subscription->plan->name }}</td>
+                            <td class="subscriptions-total">{{ $subscription->amount }}</td>
+                            <td>
+                                @permission('subscriptions-read')
+                                    <a href="{{ route('subscriptions.show', $subscription->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye">عرض</i></a>
+                                @endpermission
+                                @permission('subscriptions-print')
+                                    <a href="{{ route('subscriptions.barcodes', $subscription->id) }}" class="btn btn-default btn-sm print" > <i class="fa fa-print"> طباعة </i></a>
+                                @endpermission
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <th colspan="4">إجمالي كل الاشتراكات</th>
+                    <th class="subscriptions-net">0.0</th>
                 </tfoot>
             </table>
         </div>
@@ -192,14 +232,7 @@
                 <span>القيود</span>
             </h4>
             <table id="entries-create-table" class="table table-bordered table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>النوع</th>
-                        <th>الحساب</th>
-                        <th>القيمة</th>
-                        <th>البيان</th>
-                    </tr>
-                </thead>
+                
                 <tbody>
                     @if (!$opening_entry)
                         <tr class="print-hide">
@@ -413,10 +446,14 @@
             let orders_totals = $('.order-total');
             let orders_discounts = $('.order-discount');
             let orders_nets = $('.order-net');
+            let subscriptions_total = $('.subscriptions-total');
+
             let total_quantities = 0;
             let total_totals = 0;
             let total_discounts = 0;
             let total_nets = 0;
+            let subscriptions_net = 0;
+
             for(let index = 0; index < orders_quantities.length; index++){
                 let quantity = fillterNumber($(orders_quantities[index]).text());
                 let total = fillterNumber($(orders_totals[index]).text());
@@ -430,10 +467,15 @@
 
             }
 
+            for (let index = 0; index < subscriptions_total.length; index++) {
+                subscriptions_net += fillterNumber($(subscriptions_total[index]).text());
+            }
+
             $('.total-quantity').text(total_quantities);
             $('.total-total').text(number_format(total_totals, 2));
             $('.total-discount').text(number_format(total_discounts, 2));
             $('.total-net').text(number_format(total_nets, 2));
+            $('.subscriptions-net').text(number_format(subscriptions_net, 2));
         }
     </script>
 @endpush

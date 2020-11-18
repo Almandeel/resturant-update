@@ -54,6 +54,8 @@ class SubscriptionController extends Controller
         $request_date = $request->all();
         $request_date['start_date'] = Carbon::now('Africa/Khartoum');
         $request_date['end_date'] =  Carbon::now('Africa/Khartoum')->addDays($plan->period);
+        $request_date['user_id'] =  auth()->user()->id;
+        $request_date['amount'] =  $plan->amount;
 
         $subscription = Subscription::create($request_date);
 
