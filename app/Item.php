@@ -8,7 +8,7 @@ use Modules\Restaurant\Models\{Menu};
 class Item extends Model
 {
     protected $fillable = [
-    'name', 'image'
+    'name', 'image', 'category_id', 'barcode'
     ];
     
     public function units()
@@ -29,6 +29,11 @@ class Item extends Model
     public function stores()
     {
         return $this->belongsToMany(Store::class)->withPivot('id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Category', 'category_id');
     }
     
     public function unitsId()

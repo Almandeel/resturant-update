@@ -37,6 +37,7 @@ return [
             'waiters' => 'c,r,u,d',
             'halls' => 'c,r,u,d',
             'tables' => 'c,r,u,d',
+            'categories' => 'c,r,u,d',
             'menus' => 'c,r,u,d',
             'orders' => 'c,r,u,d',
         ],
@@ -92,6 +93,7 @@ return [
             'charges' => 'c,r,u,d,p',
             'cheques' => 'c,r,u,d,p',
             'expenses' => 'c,r,u,d,p',
+            'categories' => 'c,r,u,d',
             'sms' => 'rec'
         ],
     ],

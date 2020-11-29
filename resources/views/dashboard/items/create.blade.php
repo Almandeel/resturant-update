@@ -20,10 +20,40 @@
                 </h3>
             </div>
             <div class="box-body">
-                <div class="form-group">
-                    <label>الاسم</label>
-                    <input class="form-control name" required type="text" name="name" placeholder="الاسم">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>الاسم</label>
+                            <input class="form-control name" required type="text" name="name" placeholder="الاسم">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>الكود</label>
+                            <input class="form-control" type="text" name="barcode" placeholder="الكود" >
+                        </div>
+                    </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>القسم</label>
+                            <select id="parent-category" name="parent_category" onchange="getCategory(this.value)" class="form-control">
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>الماركة</label>
+                            <select id="category" name="sub_category" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="form-group">
                     <div class="image-wrapper">
                         <div class="image-previewer"></div>
@@ -140,6 +170,18 @@
 @endsection
 @push('js')
     <script>
+
+        function getCategory(id) {
+            $.ajax({
+                url : "{{ url('management/category') }}" + '/' + id,
+            }).done(function(data) {
+            $('#category').html('')
+            
+            $.each(data, function( index, value ) {
+                    $('#category').append(`<option value="${value.id}">${value.name}</option>`)
+                });
+            });
+        }
         $(function(){
             $('.check-all-stores').change(function(){
                 $('.check-all-stores').prop('checked', $(this).prop('checked'))
@@ -230,6 +272,8 @@
                     }
                 }
             })
+
+            getCategory($('#parent-category').val())
         })
     </script>
 @endpush

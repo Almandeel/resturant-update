@@ -29,6 +29,10 @@
                 <li class="{{ (request()->segment(1) == 'items') ? 'active' : '' }}"><a href="{{ route('items.index') }}"><i class="fa fa-cubes"></i><span>  المنتجات </span></a></li>
             @endpermission
 
+            @permission('categories-read')
+                <li class="{{ (request()->segment(1) == 'categories') ? 'active' : '' }}"><a href="{{ route('categories.index') }}"><i class="fa fa-book"></i><span>  الاقسام </span></a></li>
+            @endpermission
+
             @permission('units-read')
                 <li class="{{ (request()->segment(1) == 'units') ? 'active' : '' }}"><a href="{{ route('units.index') }}"><i class="fa fa-cubes"></i><span>  الوحدات </span></a></li>
             @endpermission

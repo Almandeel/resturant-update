@@ -21,12 +21,17 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create($this->tableName, function (Blueprint $table) {
-             
             $table->increments('id');
             $table->string('name', 45);
             $table->string('image', 160)->nullable();
             $table->string('barcode', 200)->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('category_id')
+                ->references('id')->on('categories')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

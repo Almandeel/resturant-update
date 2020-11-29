@@ -34,6 +34,7 @@
                         <th>المنتج</th>
                         <th>المخازن</th>
                         <th>الوحدات</th>
+                        <th>الماركة</th>
                         <th>الخيارات</th>
                     </tr>
                 </thead>
@@ -53,6 +54,9 @@
                                 @foreach ($item->units as $unit)
                                     <span class="badge bg-green">{{ $unit->name }}</span>
                                 @endforeach
+                            </td>
+                            <td>
+                                {{ $item->category->name }}
                             </td>
                             <td>
                                 @permission('items-read')

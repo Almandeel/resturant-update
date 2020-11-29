@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'management'], function() {
     Route::resource('items', 'ItemController');
     Route::resource('stores', 'StoreController');
     Route::resource('expenses', 'ExpenseController');
+    Route::resource('categories', 'CategoryController');
     Route::get('stores/users/add', 'StoreController@addUser')->name('stores.users.add');
     Route::post('stores/users/remove', 'StoreController@removeUser')->name('stores.users.remove');
     Route::get('stores/items/add', 'StoreController@addItem')->name('stores.items.add');
@@ -93,6 +94,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'management'], function() {
     Route::get('notifications', function() {
         return auth()->user()->notifications;
     });
+
+    Route::get('category/{id}', 'CategoryController@subCategory');
     
     
     

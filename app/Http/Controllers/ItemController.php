@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use App\Item;
 use App\Unit;
 use App\Store;
-use Illuminate\Http\Request;
-use PDF;
+use App\Category;
 use Dompdf\Dompdf;
+use Illuminate\Http\Request;
+
 class ItemController extends Controller
 {
     
@@ -39,7 +41,8 @@ class ItemController extends Controller
     {
         $stores = Store::all();
         $units = Unit::all();
-        return view('dashboard.items.create', compact('stores', 'units'));
+        $categories = Category::whereNull('parent_id')->get();
+        return view('dashboard.items.create', compact('stores', 'units', 'categories'));
     }
     
     /**
@@ -55,6 +58,13 @@ class ItemController extends Controller
         'image' => 'mimes:jpg,jpeg,png,gif|max:2048',
         ]);
         $data = $request->only(['name', 'barcode']);
+
+        if($request->sub_category) {
+            $data['category_id'] = $request->sub_category;
+        }else {
+            $data['category_id'] = $request->parent_category;
+        }
+
         if ($request->has('image')) {
             $fileName = time().'.'.$request->image->extension();
             
